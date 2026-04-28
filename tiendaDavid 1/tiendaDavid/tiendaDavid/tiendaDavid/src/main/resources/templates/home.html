@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+</head>
+<body>
+<div class="contenedor">
+    <div class="tarjeta">
+        <h1 class="titulo">Bienvenido</h1>
+        <p class="subtitulo">
+            Hola, <span class="usuario" th:text="${username}"></span>
+        </p>
+
+        <p>Has iniciado sesión correctamente.</p>
+
+        <div class="acciones">
+            <a class="boton" th:href="@{/categoria}">Ir a Categoria</a>
+            <a class="boton" th:href="@{/detallePedido}">Ir a Detalles del pedido</a>
+            <a class="boton" th:href="@{/pedido}">Ir a ver mi Pedido</a>
+            <a class="boton" th:href="@{/producto}">Ir a mi Producto</a>
+            <a class="boton" th:href="@{/usuarios/lista}">Ir a Usuarios</a>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-btn">Cerrar Sesión</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); padding: 20px; }
+    .contenedor { width: 100%; max-width: 420px; }
+    .tarjeta { background: rgba(255, 255, 255, 0.95); border-radius: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25); padding: 35px 30px; text-align: center; }
+    .titulo { font-size: 30px; color: #1565c0; margin-bottom: 10px; }
+    .subtitulo { font-size: 15px; color: #2c5364; margin-bottom: 25px; }
+    .usuario { font-weight: bold; color: #1e88e5; }
+    .acciones { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
+    .boton { display: block; padding: 14px; border-radius: 12px; text-decoration: none; background: linear-gradient(45deg, #1e88e5, #1565c0); color: white; font-weight: bold; }
+    .logout-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #dc2626, #ef4444); color: white; font-weight: bold; cursor: pointer; }
+</style>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesion</title>
+</head>
+<body>
+<div class="contenedor">
+    <h2 class="titulo">Iniciar Sesion</h2>
+    <p class="subtitulo">Ingrese sus credenciales para continuar</p>
+
+    <div th:if="${param.error}" class="mensaje error">
+        Usuario o contraseña incorrectos
+    </div>
+
+    <div th:if="${param.logout}" class="mensaje">
+        Sesión cerrada correctamente
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="campo">
+            <label for="username">Usuario</label>
+            <input type="text" id="username" name="username" placeholder="Ingrese su usuario" required>
+        </div>
+
+        <div class="campo">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+        </div>
+
+        <button type="submit" class="boton">Ingresar</button>
+    </form>
+</div>
+
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); padding: 20px; }
+    .contenedor { width: 100%; max-width: 420px; background: rgba(255,255,255,0.95); padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .titulo { font-size: 30px; color: #1565c0; margin-bottom: 10px; text-align: center; }
+    .subtitulo { font-size: 15px; color: #2c5364; margin-bottom: 25px; text-align: center; }
+    .mensaje { margin-bottom: 18px; padding: 12px; border-radius: 12px; text-align: center; background: #e3f2fd; color: #1565c0; }
+    .error { background: #fee2e2; color: #b91c1c; }
+    .campo { margin-bottom: 18px; }
+    .campo label { display: block; font-size: 13px; margin-bottom: 6px; }
+    .campo input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #ccc; }
+    .boton { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #1e88e5, #1565c0); color: white; font-size: 16px; font-weight: bold; cursor: pointer; }
+</style>
+</body>
+</html>
