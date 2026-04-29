@@ -42,4 +42,5 @@ public class Usuarios {
 
     @Column(name = "estado")
     private Boolean estado;
+
 }

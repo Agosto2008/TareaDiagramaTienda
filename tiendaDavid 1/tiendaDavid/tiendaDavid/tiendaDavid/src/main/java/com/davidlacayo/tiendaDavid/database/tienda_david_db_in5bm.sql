@@ -11,7 +11,7 @@ create table Clientes (
 );
 
 create table Usuarios (
-    codigo_usuario int primary key,
+    codigo_usuario int auto_increment primary key,
     username varchar(45),
     password varchar(45),
     email varchar(60),
@@ -20,7 +20,7 @@ create table Usuarios (
 );
 
 create table Productos (
-    codigo_producto int primary key,
+    codigo_producto int auto_increment primary key,
     nombre_producto varchar(60),
     precio decimal(10,2),
     stock int,
@@ -28,19 +28,19 @@ create table Productos (
 );
 
 create table Ventas (
-    codigo_venta int primary key,
+    codigo_venta int auto_increment primary key,
     fecha_venta date,
     total decimal(10,2),
     estado boolean,
     Clientes_dpi_cliente int,
     Usuarios_codigo_usuario int,
-    
+
     foreign key (Clientes_dpi_cliente) references Clientes(dpi_cliente),
     foreign key (Usuarios_codigo_usuario) references Usuarios(codigo_usuario)
 );
 
 create table DetalleVenta (
-    codigo_detalle_venta int primary key,
+    codigo_detalle_venta int auto_increment primary key,
     cantidad int,
     precio_unitario decimal(10,2),
     subtotal decimal(10,2),

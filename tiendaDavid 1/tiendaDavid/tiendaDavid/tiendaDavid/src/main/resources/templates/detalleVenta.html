@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Venta</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin:0;
+            padding:40px;
+            background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+        }
+
+        h1 {
+            text-align:center;
+            color:white;
+            margin-bottom:25px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius:16px;
+            padding:25px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            padding:10px 18px;
+            border-radius:8px;
+            color:white;
+            text-decoration:none;
+            font-weight:bold;
+            margin-right:5px;
+        }
+
+        .btn-nuevo { background: linear-gradient(45deg,#1e88e5,#42a5f5); }
+        .btn-editar { background: linear-gradient(45deg,#42a5f5,#1e88e5); }
+        .btn-eliminar { background: linear-gradient(45deg,#ef5350,#c62828); }
+        .btn-regreso { background: linear-gradient(45deg,#4caf50,#388e3c); }
+
+        table {
+            width:100%;
+            margin-top:20px;
+            border-collapse:collapse;
+            border-radius:12px;
+            overflow:hidden;
+        }
+
+        th, td {
+            text-align:center;
+            padding:12px;
+        }
+
+        th {
+            background:#1565c0;
+            color:white;
+        }
+
+        td {
+            background:white;
+            border-bottom:1px solid #eee;
+        }
+
+        tr:hover td {
+            background:#e3f2fd;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Detalle de Ventas</h1>
+
+<div class="card">
+
+    <a th:href="@{/detalle/nuevo}" class="btn btn-nuevo">+ Nuevo Detalle</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="d : ${detalleVenta}">
+            <td th:text="${d.id}"></td>
+            <td th:text="${d.cantidad}"></td>
+            <td th:text="${d.precio}"></td>
+
+            <td>
+                <a th:href="@{/detalle/editar/{id}(id=${d.id})}" class="btn btn-editar">Editar</a>
+                <a th:href="@{/detalle/eliminar/{id}(id=${d.id})}"
+                   class="btn btn-eliminar"
+                   onclick="return confirm('¿Eliminar detalle?')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a th:href="@{/home}" class="btn btn-regreso">Volver a Home</a>
+
+</div>
+
+</body>
+</html>

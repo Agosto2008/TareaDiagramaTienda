@@ -1,19 +1,15 @@
 package com.davidlacayo.tiendaDavid.controller;
 
-import com.davidlacayo.tiendaDavid.entity.Usuarios;
 import com.davidlacayo.tiendaDavid.entity.Ventas;
 import com.davidlacayo.tiendaDavid.service.VentasService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Positive;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Validated
 @Controller

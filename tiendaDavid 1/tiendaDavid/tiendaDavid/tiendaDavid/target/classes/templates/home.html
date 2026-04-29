@@ -10,17 +10,17 @@
     <div class="tarjeta">
         <h1 class="titulo">Bienvenido</h1>
         <p class="subtitulo">
-            Hola, <span class="usuario" th:text="${username}"></span>
+            Hola, <span class="usuarios" th:text="${username}"></span>
         </p>
 
         <p>Has iniciado sesión correctamente.</p>
 
         <div class="acciones">
-            <a class="boton" th:href="@{/categoria}">Ir a Categoria</a>
-            <a class="boton" th:href="@{/detallePedido}">Ir a Detalles del pedido</a>
-            <a class="boton" th:href="@{/pedido}">Ir a ver mi Pedido</a>
-            <a class="boton" th:href="@{/producto}">Ir a mi Producto</a>
-            <a class="boton" th:href="@{/usuarios/lista}">Ir a Usuarios</a>
+            <a class="boton" th:href="@{/usuarios}">Ir a Usuario</a>
+            <a class="boton" th:href="@{/clientes}">Ir a Cliente</a>
+            <a class="boton" th:href="@{/productos}">Ir a ver mi Producto</a>
+            <a class="boton" th:href="@{/detalleVenta}">Ir a Detalle de la venta</a>
+            <a class="boton" th:href="@{/ventas}">Ir a ver mi venta</a>
 
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="logout-btn">Cerrar Sesión</button>

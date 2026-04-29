@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos</title>
+    <style>
+        body {
+            font-family:'Segoe UI';
+            background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+        .card {
+            background:white;
+            padding:30px;
+            border-radius:16px;
+            width:400px;
+        }
+        input {
+            width:100%;
+            padding:10px;
+            margin-bottom:10px;
+        }
+        button {
+            width:100%;
+            padding:12px;
+            background:#1565c0;
+            color:white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2 th:text="${modoEdicion}? 'Editar Producto':'Nuevo Producto'"></h2>
+
+    <form th:object="${productos}" method="post"
+          th:action="${modoEdicion}? @{/productos/actualizar/{id}(id=${productos.id})} : @{/productos/guardar}">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <input type="text" placeholder="Nombre" th:field="*{nombre}" required>
+        <input type="number" placeholder="Precio" th:field="*{precio}" required>
+
+        <button type="submit">Guardar</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

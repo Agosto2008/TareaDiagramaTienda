@@ -61,4 +61,25 @@ public class UsuariosServiceImpl implements UsuariosService{
         }
         usuariosRepository.deleteById(id);
     }
+
+    @Override
+    public boolean register(Usuarios usuarios) {
+        if (usuariosRepository.findByEmail(usuarios.getUsername()).isPresent()) {
+            return false;
+        }
+        if (usuariosRepository.findByEmail(usuarios.getEmail()).isPresent()) {
+            return false;
+        }
+
+        if (usuarios.getPassword().length() < 8) {
+            throw new RuntimeException("La contraseña debe de tener al menos 6 caracteres");
+        }
+
+        usuarios.setPassword(passwordEncoder.encode(usuarios.getPassword()));
+        usuarios.setRol("ROL_USER");
+        usuariosRepository.save(usuarios);
+        return true;
+    }
+
+
 }

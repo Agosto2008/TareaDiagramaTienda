@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin:0;
+            padding:40px;
+            background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+        }
+        h1 { text-align:center; color:white; }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius:16px;
+            padding:25px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            padding:10px 18px;
+            border-radius:8px;
+            color:white;
+            text-decoration:none;
+            font-weight:bold;
+        }
+        .btn-nuevo { background:#1e88e5; }
+        .btn-editar { background:#42a5f5; }
+        .btn-eliminar { background:#e53935; }
+
+        table {
+            width:100%;
+            margin-top:20px;
+            border-collapse:collapse;
+        }
+        th, td { padding:12px; text-align:center; }
+        th { background:#1565c0; color:white; }
+    </style>
+</head>
+
+<body>
+
+<h1>Lista de Clientes</h1>
+
+<div class="card">
+
+    <a th:href="@{/clientes/nuevo}" class="btn btn-nuevo">+ Nuevo Cliente</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="cliente : ${clientes}">
+            <td th:text="${cliente.id}"></td>
+            <td th:text="${cliente.nombre}"></td>
+            <td th:text="${cliente.apellido}"></td>
+
+            <td>
+                <a th:href="@{/clientes/editar/{id}(id=${c.id})}" class="btn btn-editar">Editar</a>
+                <a th:href="@{/clientes/eliminar/{id}(id=${c.id})}" class="btn btn-eliminar"
+                   onclick="return confirm('¿Eliminar cliente?')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a th:href="@{/home}" class="btn" style="background:#4caf50;">Volver a home</a>
+
+</div>
+</body>
+</html>

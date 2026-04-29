@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Venta</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            padding:30px;
+            border-radius:16px;
+            width:400px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        h2 {
+            text-align:center;
+            color:#1565c0;
+            margin-bottom:20px;
+        }
+
+        .input-group {
+            margin-bottom:15px;
+        }
+
+        input {
+            width:100%;
+            padding:12px;
+            border-radius:8px;
+            border:1px solid #ccc;
+        }
+
+        .btn {
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:8px;
+            font-weight:bold;
+            margin-top:10px;
+            cursor:pointer;
+        }
+
+        .btn-guardar {
+            background: linear-gradient(45deg,#1e88e5,#1565c0);
+            color:white;
+        }
+
+        .btn-volver {
+            background: gray;
+            color:white;
+            text-decoration:none;
+            display:block;
+            text-align:center;
+            padding:10px;
+            border-radius:8px;
+            margin-top:10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2 th:text="${modoEdicion}? 'Editar Detalle':'Nuevo Detalle'"></h2>
+
+    <form th:object="${detalleVenta}" method="post"
+          th:action="${modoEdicion}? @{/detalle/actualizar/{id}(id=${detalleVenta.id})} : @{/detalle/guardar}">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="input-group">
+            <input type="number" placeholder="Cantidad" th:field="*{cantidad}" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" placeholder="Precio" th:field="*{precio}" required>
+        </div>
+
+        <button type="submit" class="btn btn-guardar"
+                th:text="${modoEdicion}? 'Actualizar':'Guardar'"></button>
+
+        <a th:href="@{/detalle/lista}" class="btn-volver">Volver</a>
+
+    </form>
+
+</div>
+
+</body>
+</html>
