@@ -3,39 +3,37 @@ package com.davidlacayo.tiendaDavid.controller;
 import com.davidlacayo.tiendaDavid.entity.Ventas;
 import com.davidlacayo.tiendaDavid.service.VentasService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
-@Validated
 @Controller
 @RequestMapping("/ventas")
 public class VentasController {
-    private VentasService ventasService;
+
+    private final VentasService ventasService;
+
     public VentasController(VentasService ventasService) {
         this.ventasService = ventasService;
     }
 
-
-    @GetMapping("/lista")
-    public String listarVentas(Model model){
+    @GetMapping("")
+    public String listarVentas(Model model) {
         model.addAttribute("ventas", ventasService.listarVentas());
         return "ventas";
     }
 
     @GetMapping("/nuevo")
-    public String mostrarFormularioNuevoVentas(Model model) {
+    public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("ventas", new Ventas());
         model.addAttribute("modoEdicion", false);
         return "ventas-form";
     }
 
     @PostMapping("/guardar")
-    public String crearVentas(@Valid @RequestBody Ventas ventas, BindingResult result, Model model) {
+    public String crearVentas(@Valid @ModelAttribute("ventas") Ventas ventas,
+                              BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("modoEdicion", false);
             return "ventas-form";
@@ -44,23 +42,28 @@ public class VentasController {
         return "redirect:/ventas";
     }
 
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditarVentas(@PathVariable Integer id, Model model) {
-        Ventas ventas = ventasService.buscarPorIdVentas(id);
-
-        model.addAttribute("ventas", ventas);
+    @GetMapping("/actualizar/{id}")
+    public String mostrarFormularioEditar(@PathVariable Integer id, Model model) {
+        model.addAttribute("ventas", ventasService.buscarPorIdVentas(id));
         model.addAttribute("modoEdicion", true);
-
         return "ventas-form";
     }
 
-    @GetMapping("/eliminar/{id}")
-    public String eliminarVentas(@PathVariable
-                                  @Min(value = 1, message = "El id debe ser igual o mayor a 1")
-                                  Integer id) {
-        ventasService.eliminarVentas(id);
+    @PostMapping("/actualizar/{id}")
+    public String actualizarVentas(@Valid @ModelAttribute("ventas") Ventas ventas,
+                                   @PathVariable Integer id,
+                                   BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("modoEdicion", true);
+            return "ventas-form";
+        }
+        ventasService.actualizarVentas(id, ventas);
         return "redirect:/ventas";
     }
 
-
+    @GetMapping("/eliminar/{id}")
+    public String eliminarVentas(@PathVariable Integer id) {
+        ventasService.eliminarVentas(id);
+        return "redirect:/ventas";
+    }
 }

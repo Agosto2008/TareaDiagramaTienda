@@ -38,15 +38,28 @@ public class HomeController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("usuarios", new Usuarios());
+        Usuarios u = new Usuarios();
+        u.setRol("USER");       // rol por defecto
+        u.setEstado(true);      // activo por defecto
+        model.addAttribute("usuarios", u);
         return "register";
     }
 
     @PostMapping("/register")
-    public String register(@Valid Usuarios usuarios, BindingResult result, Model model) {
+    public String register(@Valid Usuarios usuarios,
+                           BindingResult result,
+                           Model model) {
         if (result.hasErrors()) {
             return "register";
         }
+
+        if (usuarios.getRol() == null || usuarios.getRol().isBlank()) {
+            usuarios.setRol("USER");
+        }
+        if (usuarios.getEstado() == null) {
+            usuarios.setEstado(true);
+        }
+
         boolean registrado = usuarioService.register(usuarios);
 
         if (!registrado) {
@@ -56,11 +69,8 @@ public class HomeController {
         return "redirect:/login";
     }
 
-
     @GetMapping("/")
-    public String redirectToHome(){
+    public String redirectToHome() {
         return "redirect:/home";
     }
-
-
 }

@@ -10,8 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
-@Validated
 @Controller
+@Validated
 @RequestMapping("/usuarios")
 public class UsuariosController {
 
@@ -21,14 +21,12 @@ public class UsuariosController {
         this.usuarioService = usuarioService;
     }
 
-    // LISTAR
-    @GetMapping("/usuarios")
+    @GetMapping("")
     public String listar(Model model) {
         model.addAttribute("usuarios", usuarioService.listarUsuarios());
         return "usuarios";
     }
 
-    // FORM NUEVO
     @GetMapping("/nuevo")
     public String mostrarFormulario(Model model) {
         model.addAttribute("usuarios", new Usuarios());
@@ -36,48 +34,39 @@ public class UsuariosController {
         return "usuarios-form";
     }
 
-    // GUARDAR
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("usuarios") Usuarios usuarios,
                           BindingResult result,
                           Model model) {
-
         if (result.hasErrors()) {
             model.addAttribute("modoEdicion", false);
             return "usuarios-form";
         }
-
         usuarioService.crearUsuarios(usuarios);
         return "redirect:/usuarios";
     }
 
-    // FORM EDITAR
     @GetMapping("/actualizar/{id}")
     public String mostrarFormActualizar(@PathVariable Integer id, Model model) {
         Usuarios usuarios = usuarioService.buscarPorIdUsuarios(id);
-
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("modoEdicion", true);
         return "usuarios-form";
     }
 
-    // ACTUALIZAR
     @PostMapping("/actualizar/{id}")
     public String actualizar(@Valid @ModelAttribute("usuarios") Usuarios usuarios,
                              @PathVariable Integer id,
                              BindingResult result,
                              Model model) {
-
         if (result.hasErrors()) {
             model.addAttribute("modoEdicion", true);
             return "usuarios-form";
         }
-
         usuarioService.actualizarUsuarios(id, usuarios);
         return "redirect:/usuarios";
     }
 
-    // ELIMINAR
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         usuarioService.eliminarUsuarios(id);

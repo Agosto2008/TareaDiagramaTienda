@@ -1,11 +1,8 @@
 package com.davidlacayo.tiendaDavid.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -22,26 +19,22 @@ public class Ventas {
     @Column(name = "codigo_venta")
     private Integer codigoVenta;
 
-    @NotBlank(message = "El campo de nombre no puede ir vacio")
-    @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
+    @NotNull(message = "La fecha no puede ir vacía")
     @Column(name = "fecha_venta")
     private LocalDate fechaVenta;
 
-    @NotNull(message = "El campo de total no puede ir vacio")
+    @NotNull(message = "El total no puede ir vacío")
     @Column(name = "total")
     private Double total;
 
     @Column(name = "estado")
     private Boolean estado;
 
-    @NotNull(message = "El campo de dpi de cliente no puede ir vacio")
+    @NotNull(message = "El DPI del cliente no puede ir vacío")
     @Column(name = "Clientes_dpi_cliente")
-    private Integer ClientesDpiCliente;
+    private Integer clientesDpiCliente;
 
-    @NotNull(message = "El campo de codigo de usuario no puede ir vacio")
+    @NotNull(message = "El código de usuario no puede ir vacío")
     @Column(name = "Usuarios_codigo_usuario")
-    private Integer UsuariosCodigoUsuario;
-
-
-
+    private Integer usuariosCodigoUsuario;
 }

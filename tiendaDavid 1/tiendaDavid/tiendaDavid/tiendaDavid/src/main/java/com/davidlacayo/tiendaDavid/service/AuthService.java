@@ -11,10 +11,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService implements UserDetailsService {
-    private UsuariosRepository usuarioRepository;
+
+    private final UsuariosRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UsuariosRepository usuarioRepository,  PasswordEncoder passwordEncoder) {
+    public AuthService(UsuariosRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -22,14 +23,17 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Usuarios usuarios = usuarioRepository.findByEmail(username)
-                .orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado con nombre: " + username));
+        // Cambiado de findByEmail a findByUsername
+        Usuarios usuarios = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "Usuario no encontrado: " + username));
 
         return User.builder()
                 .username(usuarios.getUsername())
                 .password(usuarios.getPassword())
-                .roles(usuarios.getRol() != null ? usuarios.getRol().replace("ROLE_", "") : "USER")
+                .roles(usuarios.getRol() != null
+                        ? usuarios.getRol().replace("ROLE_", "")
+                        : "USER")
                 .build();
     }
-
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Error</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+        font-family:'Segoe UI',sans-serif;
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    }
+    .card {
+        background:rgba(255,255,255,0.95);
+        border-radius:16px;
+        padding:40px 35px;
+        max-width:500px;
+        width:90%;
+        box-shadow:0 10px 30px rgba(0,0,0,0.4);
+        text-align:center;
+    }
+    .icono { font-size:60px; margin-bottom:15px; }
+    h2 { color:#c62828; margin-bottom:15px; font-size:22px; }
+    p {
+        color:#555;
+        font-size:15px;
+        line-height:1.6;
+        margin-bottom:25px;
+        background:#fdecea;
+        padding:15px;
+        border-radius:8px;
+        border-left:4px solid #e53935;
+    }
+    .btn-volver {
+        display:inline-block;
+        padding:12px 30px;
+        background:linear-gradient(45deg,#1e88e5,#1565c0);
+        color:white;
+        text-decoration:none;
+        border-radius:8px;
+        font-weight:bold;
+    }
+    .btn-home {
+        display:inline-block;
+        padding:12px 30px;
+        background:linear-gradient(45deg,#4caf50,#388e3c);
+        color:white;
+        text-decoration:none;
+        border-radius:8px;
+        font-weight:bold;
+        margin-left:10px;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="icono">⚠️</div>
+  <h2>Algo salió mal</h2>
+  <p th:text="${errorMensaje}">Error desconocido</p>
+  <a th:href="@{javascript:history.back()}" class="btn-volver">← Volver</a>
+  <a th:href="@{/home}" class="btn-home">🏠 Inicio</a>
+</div>
+</body>
+</html>

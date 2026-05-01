@@ -2,98 +2,81 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Detalle Venta</title>
-
+    <title th:text="${modoEdicion} ? 'Editar Detalle' : 'Nuevo Detalle'"></title>
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
-
-        .card {
-            background: rgba(255,255,255,0.95);
-            padding:30px;
-            border-radius:16px;
-            width:400px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.4);
-        }
-
-        h2 {
-            text-align:center;
-            color:#1565c0;
-            margin-bottom:20px;
-        }
-
-        .input-group {
-            margin-bottom:15px;
-        }
-
-        input {
-            width:100%;
+        body { font-family:'Segoe UI',sans-serif; background:linear-gradient(135deg,#0f2027,#203a43,#2c5364); display:flex; justify-content:center; align-items:center; min-height:100vh; }
+        .card { background:rgba(255,255,255,0.95); padding:30px; border-radius:16px; width:430px; box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+        h2 { text-align:center; color:#1565c0; margin-bottom:20px; }
+        .input-group { margin-bottom:14px; }
+        label { font-size:13px; color:#555; font-weight:bold; display:block; margin-bottom:4px; }
+        .hint { font-size:11px; color:#888; margin-top:3px; }
+        input { width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; box-sizing:border-box; }
+        input:focus { border:1px solid #1565c0; outline:none; }
+        input:invalid { border-color:#e53935; }
+        .error-text { font-size:12px; color:#e53935; margin-top:3px; }
+        .aviso {
+            background:#fff3e0;
+            border-left:4px solid #ff9800;
             padding:12px;
             border-radius:8px;
-            border:1px solid #ccc;
+            font-size:13px;
+            color:#e65100;
+            margin-bottom:16px;
         }
-
-        .btn {
-            width:100%;
-            padding:12px;
-            border:none;
-            border-radius:8px;
-            font-weight:bold;
-            margin-top:10px;
-            cursor:pointer;
-        }
-
-        .btn-guardar {
-            background: linear-gradient(45deg,#1e88e5,#1565c0);
-            color:white;
-        }
-
-        .btn-volver {
-            background: gray;
-            color:white;
-            text-decoration:none;
-            display:block;
-            text-align:center;
-            padding:10px;
-            border-radius:8px;
-            margin-top:10px;
-        }
+        button { width:100%; padding:12px; background:linear-gradient(45deg,#1e88e5,#1565c0); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:10px; }
+        .btn-volver { background:gray; color:white; text-decoration:none; display:block; text-align:center; padding:10px; border-radius:8px; margin-top:10px; }
     </style>
 </head>
-
 <body>
-
 <div class="card">
+    <h2 th:text="${modoEdicion} ? 'Editar Detalle' : 'Nuevo Detalle'"></h2>
 
-    <h2 th:text="${modoEdicion}? 'Editar Detalle':'Nuevo Detalle'"></h2>
+    <!-- Aviso importante -->
+    <div class="aviso" th:if="${!modoEdicion}">
+        ⚠️ Antes de crear un detalle asegúrate de que el <strong>Código de Venta</strong>
+        y el <strong>Código de Producto</strong> que vas a ingresar ya existan en el sistema.
+    </div>
 
     <form th:object="${detalleVenta}" method="post"
-          th:action="${modoEdicion}? @{/detalle/actualizar/{id}(id=${detalleVenta.id})} : @{/detalle/guardar}">
+          th:action="${modoEdicion} ? @{/detalle/actualizar/{id}(id=${detalleVenta.codigoDetalleVenta})} : @{/detalle/guardar}">
 
-        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{codigoDetalleVenta}"/>
 
         <div class="input-group">
-            <input type="number" placeholder="Cantidad" th:field="*{cantidad}" required>
+            <label>Cantidad</label>
+            <input type="number" th:field="*{cantidad}"
+                   placeholder="Ej: 3" min="1" required>
+            <p class="error-text" th:errors="*{cantidad}"></p>
+            <span class="hint">Debe ser un número mayor a 0</span>
         </div>
 
         <div class="input-group">
-            <input type="number" placeholder="Precio" th:field="*{precio}" required>
+            <label>Subtotal</label>
+            <input type="number" step="0.01" th:field="*{subtotal}"
+                   placeholder="Ej: 150.00" min="0.01" required>
+            <p class="error-text" th:errors="*{subtotal}"></p>
+            <span class="hint">Monto total de este detalle</span>
         </div>
 
-        <button type="submit" class="btn btn-guardar"
-                th:text="${modoEdicion}? 'Actualizar':'Guardar'"></button>
+        <div class="input-group">
+            <label>Código de Producto</label>
+            <input type="number" th:field="*{productosCodigoProducto}"
+                   placeholder="Ej: 1" min="1" required>
+            <p class="error-text" th:errors="*{productosCodigoProducto}"></p>
+            <span class="hint">Debe existir en la lista de Productos</span>
+        </div>
 
-        <a th:href="@{/detalle/lista}" class="btn-volver">Volver</a>
+        <div class="input-group">
+            <label>Código de Venta</label>
+            <input type="number" th:field="*{ventasCodigoVenta}"
+                   placeholder="Ej: 1" min="1" required>
+            <p class="error-text" th:errors="*{ventasCodigoVenta}"></p>
+            <span class="hint">Debe existir en la lista de Ventas</span>
+        </div>
 
+        <button type="submit" th:text="${modoEdicion} ? 'Actualizar' : 'Guardar'"></button>
+        <a th:href="@{/detalle}" class="btn-volver">Volver</a>
     </form>
-
 </div>
-
 </body>
 </html>

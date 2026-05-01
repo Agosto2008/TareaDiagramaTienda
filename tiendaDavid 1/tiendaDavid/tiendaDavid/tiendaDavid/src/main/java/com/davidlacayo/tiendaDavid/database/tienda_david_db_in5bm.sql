@@ -13,7 +13,7 @@ create table Clientes (
 create table Usuarios (
     codigo_usuario int auto_increment primary key,
     username varchar(45),
-    password varchar(45),
+    password varchar(255),
     email varchar(60),
     rol varchar(45),
     estado boolean

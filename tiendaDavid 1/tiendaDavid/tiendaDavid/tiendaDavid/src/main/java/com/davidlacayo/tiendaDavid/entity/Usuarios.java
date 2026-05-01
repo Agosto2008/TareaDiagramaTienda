@@ -20,27 +20,24 @@ public class Usuarios {
     @Column(name = "codigo_usuario")
     private Integer codigoUsuario;
 
-    @NotBlank(message = "El campo de nombre no puede ir vacio")
-    @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
+    @NotBlank(message = "El nombre de usuario no puede ir vacío")
+    @Size(min = 2, max = 45, message = "El username debe tener entre 2 y 45 caracteres")
     @Column(name = "username")
     private String username;
 
-    @NotBlank(message = "El campo de contraseña no puede ir vacio")
-    @Size(min = 8, max = 150, message = "El contraseña debe tener entre 8 y 150 caracteres")
-    @Column(name = "password")
+    @NotBlank(message = "La contraseña no puede ir vacía")
+    @Size(min = 8, message = "La contraseña debe tener entre 8 y 45 caracteres")
+    @Column(name = "password", length = 255)
     private String password;
 
-    @NotBlank(message = "El campo de direccion no puede ir vacio")
-    @Size(min = 1, max = 100, message = "La dirreccion no puede sobrepasar los 100 caracteres")
+    @NotBlank(message = "El email no puede ir vacío")
+    @Email(message = "Debe ingresar un email válido")
     @Column(name = "email")
-    @Email
     private String email;
 
-    @NotBlank(message = "El campo de direccion no puede ir vacio")
     @Column(name = "rol")
     private String rol;
 
     @Column(name = "estado")
     private Boolean estado;
-
 }

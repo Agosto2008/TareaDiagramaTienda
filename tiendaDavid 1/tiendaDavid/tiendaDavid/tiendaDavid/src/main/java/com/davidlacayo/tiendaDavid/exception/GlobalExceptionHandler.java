@@ -1,79 +1,50 @@
 package com.davidlacayo.tiendaDavid.exception;
 
-import jakarta.validation.ConstraintViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Error de llave foránea o duplicado en BD
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public String handleDataIntegrity(DataIntegrityViolationException ex, Model model) {
+        String mensaje = "Error de integridad de datos. ";
+
+        String causa = ex.getMostSpecificCause().getMessage().toLowerCase();
+
+        if (causa.contains("foreign key")) {
+            mensaje += "El código que ingresaste no existe en el sistema. Verifica que el cliente, usuario, producto o venta exista antes de continuar.";
+        } else if (causa.contains("duplicate") || causa.contains("unique")) {
+            mensaje += "Ya existe un registro con ese ID o código. Usa uno diferente.";
+        } else {
+            mensaje += "Verifica que todos los datos ingresados sean correctos.";
+        }
+
+        model.addAttribute("errorMensaje", mensaje);
+        return "error";
+    }
+
+    // Recurso no encontrado
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", ex.getMessage()));
+    public String handleNotFound(ResourceNotFoundException ex, Model model) {
+        model.addAttribute("errorMensaje", ex.getMessage());
+        return "error";
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<?> handleConstraintValidation(ConstraintViolationException ex) {
-
-        String msg = ex.getConstraintViolations()
-                .iterator()
-                .next()
-                .getMessage();
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("message", msg));
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> handleBadJson(HttpMessageNotReadableException ex) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("message", "JSON inválido o tipo de dato incorrecto."));
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleBodyValidation(MethodArgumentNotValidException ex) {
-
-        Map<String, String> errores = new HashMap<>();
-
-        ex.getBindingResult()
-                .getFieldErrors()
-                .forEach(error ->
-                        errores.put(
-                                error.getField(),
-                                error.getDefaultMessage()
-                        )
-                );
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(errores);
-    }
-
+    // Argumento inválido
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException ex) {
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("message", ex.getMessage()));
+    public String handleIllegalArgument(IllegalArgumentException ex, Model model) {
+        model.addAttribute("errorMensaje", ex.getMessage());
+        return "error";
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<String> handleRouteNotFound(NoHandlerFoundException ex) {
-        return new ResponseEntity<>(
-                "La ruta que intentas acceder es inexistente o incorrecta",
-                HttpStatus.NOT_FOUND
-        );
+    // Cualquier otro error no controlado
+    @ExceptionHandler(Exception.class)
+    public String handleGeneral(Exception ex, Model model) {
+        model.addAttribute("errorMensaje", "Ocurrió un error inesperado: " + ex.getMessage());
+        return "error";
     }
 }

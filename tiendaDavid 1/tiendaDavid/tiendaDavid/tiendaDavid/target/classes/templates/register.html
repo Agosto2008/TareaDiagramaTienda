@@ -40,6 +40,7 @@
             border-radius:8px;
             border:1px solid #ccc;
             outline:none;
+            box-sizing: border-box;
         }
 
         input:focus {
@@ -52,6 +53,16 @@
             color:#e53935;
             margin-top:3px;
             margin-bottom:8px;
+        }
+
+        .error-global {
+            background:#fdecea;
+            color:#e53935;
+            padding:10px;
+            border-radius:8px;
+            text-align:center;
+            font-size:13px;
+            margin-bottom:12px;
         }
 
         .btn {
@@ -110,26 +121,14 @@
 
     <h2>Registro</h2>
 
+    <!-- Mensaje si el usuario ya existe -->
+    <div class="error-global" th:if="${Error}" th:text="${Error}"></div>
+
     <form th:action="@{/register}" th:object="${usuarios}" method="post">
 
         <div class="input-group">
-            <input type="text" th:field="*{nombreUsuario}" placeholder="Nombre">
-            <p class="error-text" th:errors="*{nombreUsuario}"></p>
-        </div>
-
-        <div class="input-group">
-            <input type="text" th:field="*{apellidoUsuario}" placeholder="Apellido">
-            <p class="error-text" th:errors="*{apellidoUsuario}"></p>
-        </div>
-
-        <div class="input-group">
-            <input type="number" th:field="*{edadUsuario}" placeholder="Edad">
-            <p class="error-text" th:errors="*{edadUsuario}"></p>
-        </div>
-
-        <div class="input-group">
-            <input type="text" th:field="*{telefonoUsuario}" placeholder="Teléfono">
-            <p class="error-text" th:errors="*{telefonoUsuario}"></p>
+            <input type="text" th:field="*{username}" placeholder="Nombre de usuario">
+            <p class="error-text" th:errors="*{username}"></p>
         </div>
 
         <div class="input-group">
@@ -141,6 +140,9 @@
             <input type="password" th:field="*{password}" placeholder="Password">
             <p class="error-text" th:errors="*{password}"></p>
         </div>
+
+        <!-- Campo oculto para asignar rol por defecto -->
+        <input type="hidden" th:field="*{rol}" value="USER">
 
         <button type="submit" class="btn btn-guardar">Registrar</button>
 

@@ -2,77 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Clientes</title>
-
+    <title th:text="${modoEdicion} ? 'Editar Cliente' : 'Nuevo Cliente'"></title>
     <style>
-        body {
-            font-family: 'Segoe UI';
-            background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
-
-        .card {
-            background: rgba(255,255,255,0.95);
-            padding:30px;
-            border-radius:16px;
-            width:400px;
-        }
-
-        input {
-            width:100%;
-            padding:12px;
-            margin-bottom:10px;
-            border-radius:8px;
-            border:1px solid #ccc;
-        }
-
-        button {
-            width:100%;
-            padding:12px;
-            background:#1565c0;
-            color:white;
-            border:none;
-            border-radius:8px;
-        }
-
-        .btn-volver {
-            display:block;
-            text-align:center;
-            margin-top:10px;
-            color:white;
-            background:gray;
-            padding:10px;
-            border-radius:8px;
-            text-decoration:none;
-        }
+        body { font-family:'Segoe UI'; background:linear-gradient(135deg,#0f2027,#203a43,#2c5364); display:flex; justify-content:center; align-items:center; min-height:100vh; }
+        .card { background:rgba(255,255,255,0.95); padding:30px; border-radius:16px; width:420px; box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+        h2 { text-align:center; color:#1565c0; margin-bottom:20px; }
+        .input-group { margin-bottom:12px; }
+        label { font-size:13px; color:#555; font-weight:bold; display:block; margin-bottom:4px; }
+        input, select { width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; box-sizing:border-box; }
+        input:focus, select:focus { border:1px solid #1565c0; outline:none; }
+        button { width:100%; padding:12px; background:linear-gradient(45deg,#1e88e5,#1565c0); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:5px; }
+        .btn-volver { display:block; text-align:center; margin-top:10px; color:white; background:gray; padding:10px; border-radius:8px; text-decoration:none; }
     </style>
 </head>
-
 <body>
-
 <div class="card">
-
-    <h2 th:text="${modoEdicion}? 'Editar Cliente':'Nuevo Cliente'"></h2>
+    <h2 th:text="${modoEdicion} ? 'Editar Cliente' : 'Nuevo Cliente'"></h2>
 
     <form th:object="${clientes}" method="post"
-          th:action="${modoEdicion}? @{/clientes/actualizar/{id}(id=${clientes.id})} : @{/clientes/guardar}">
+          th:action="${modoEdicion} ? @{/clientes/actualizar/{id}(id=${clientes.dpiCliente})} : @{/clientes/guardar}">
 
-        <input type="hidden" th:field="*{id}"/>
+        <div class="input-group">
+            <label>DPI</label>
+            <!-- En edición el DPI no se puede cambiar, va como hidden -->
+            <input th:if="${modoEdicion}" type="hidden" th:field="*{dpiCliente}"/>
+            <input th:if="${modoEdicion}" type="number" th:value="${clientes.dpiCliente}" disabled/>
+            <!-- En creación el DPI se ingresa normalmente -->
+            <input th:if="${!modoEdicion}" type="number" th:field="*{dpiCliente}" placeholder="Ingrese el DPI" required/>
+        </div>
 
-        <input type="text" placeholder="Nombre" th:field="*{nombre}" required>
-        <input type="text" placeholder="Apellido" th:field="*{apellido}" required>
+        <div class="input-group">
+            <label>Nombre</label>
+            <input type="text" th:field="*{nombreCliente}" placeholder="Nombre" required>
+        </div>
 
-        <button type="submit"
-                th:text="${modoEdicion}? 'Actualizar':'Guardar'"></button>
+        <div class="input-group">
+            <label>Apellido</label>
+            <input type="text" th:field="*{apellidoCliente}" placeholder="Apellido" required>
+        </div>
 
-        <a th:href="@{/clientes/lista}" class="btn-volver">Volver</a>
+        <div class="input-group">
+            <label>Dirección</label>
+            <input type="text" th:field="*{direccion}" placeholder="Dirección" required>
+        </div>
 
+        <div class="input-group">
+            <label>Estado</label>
+            <select th:field="*{estado}">
+                <option th:value="true">Activo</option>
+                <option th:value="false">Inactivo</option>
+            </select>
+        </div>
+
+        <button type="submit" th:text="${modoEdicion} ? 'Actualizar' : 'Guardar'"></button>
+        <a th:href="@{/clientes}" class="btn-volver">Volver</a>
     </form>
-
 </div>
-
 </body>
 </html>

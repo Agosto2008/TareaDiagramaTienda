@@ -4,11 +4,11 @@ import com.davidlacayo.tiendaDavid.entity.Ventas;
 import com.davidlacayo.tiendaDavid.exception.ResourceNotFoundException;
 import com.davidlacayo.tiendaDavid.repository.VentasRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-public class VentasServiceImpl implements VentasService{
+public class VentasServiceImpl implements VentasService {
+
     private final VentasRepository ventasRepository;
 
     public VentasServiceImpl(VentasRepository ventasRepository) {
@@ -33,18 +33,22 @@ public class VentasServiceImpl implements VentasService{
         existente.setEstado(ventas.getEstado());
         existente.setClientesDpiCliente(ventas.getClientesDpiCliente());
         existente.setUsuariosCodigoUsuario(ventas.getUsuariosCodigoUsuario());
-        return ventasRepository.save(ventas);
+        return ventasRepository.save(existente); // CORREGIDO: antes guardaba ventas en lugar de existente
     }
 
     @Override
     public Ventas buscarPorIdVentas(Integer id) {
-        return ventasRepository.findById(id).orElseThrow(() -> new RuntimeException("Ruta con codigo de venta: "+id+" no encontrada"));
+        return ventasRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Venta con id: " + id + " no encontrada"));
     }
 
     @Override
     public void eliminarVentas(Integer id) {
-        if (ventasRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Ruta con codigo de venta: "+id+" no encontrada");
+        // CORREGIDO: la condición estaba invertida, lanzaba error si SÍ existía
+        if (!ventasRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    "Venta con id: " + id + " no encontrada");
         }
         ventasRepository.deleteById(id);
     }
